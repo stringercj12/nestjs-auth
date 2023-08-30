@@ -7,8 +7,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LoginValidationMiddleware } from './middlewares/login-validation.middleware';
-import { UserService } from 'src/user/user.service';
-
 @Module({
   imports: [
     UserModule,

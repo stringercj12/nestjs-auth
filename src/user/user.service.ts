@@ -3,11 +3,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { Prisma } from '.prisma/client';
 import { hash } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UnauthorizedError } from 'src/auth/errors/unauthorized.error';
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService: PrismaService) { }
+  constructor(private prismaService: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
     const data: Prisma.UserCreateInput = {
@@ -17,8 +16,8 @@ export class UserService {
 
     const user = await this.prismaService.user.findUnique({
       where: {
-        email: createUserDto.email
-      }
+        email: createUserDto.email,
+      },
     });
 
     if (user) {
@@ -27,19 +26,12 @@ export class UserService {
 
     const createdUser = await this.prismaService.user.create({ data });
 
-    console.log(createdUser)
-
-    delete createUserDto.password;
-
     return createdUser;
   }
 
   findByEmail(email: string) {
     return this.prismaService.user.findUnique({
       where: { email },
-      select: {
-        password: false
-      }
     });
   }
 
@@ -48,24 +40,22 @@ export class UserService {
   }
 
   async removeById(id: string) {
-
     const user = await this.prismaService.user.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     if (!user) {
       throw new BadRequestException('Email not exists');
     }
 
-  await this.prismaService.user.delete({
+    await this.prismaService.user.delete({
       where: {
-        id
-      }
+        id,
+      },
     });
 
-
-    return ''
+    return '';
   }
 }
